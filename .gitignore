@@ -32,3 +32,4 @@ dist
 www/
 .vscode
 config/userSetConfig
+lib
