@@ -1,0 +1,35 @@
+{
+  "name": "mido-react",
+  "version": "1.0.0",
+  "description": "react和redux快速使用方法",
+  "main": "index.js",
+  "scripts": {
+    "lib": "rm -rf ./lib && babel src --out-dir lib",
+    "lint": "esw src/*.js --fix --watch"
+  },
+  "author": "Midnight Blues",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-plugin-add-module-exports": "^1.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-mido": "^1.0.0",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-watch": "^5.0.1"
+  },
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router": "^5.0.0",
+    "react-router-dom": "^5.0.0"
+  },
+  "files": [
+    "lib",
+    "package.json",
+    "README.md"
+  ]
+}
