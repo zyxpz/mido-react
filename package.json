@@ -1,7 +1,7 @@
 {
   "name": "mido-react",
   "version": "1.0.0",
-  "description": "react和redux快速使用方法",
+  "description": "react,redux,router快速使用方法",
   "main": "index.js",
   "scripts": {
     "lib": "rm -rf ./lib && babel src --out-dir lib",

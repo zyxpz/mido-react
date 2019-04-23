@@ -4,6 +4,8 @@ import * as reactRedux from 'react-redux';
 
 import react from 'react';
 
+import * as reactRouterDom from 'react-router-dom';
+
 import CreactReact from './creatReact';
 
 const creatReact = new CreactReact();
@@ -15,7 +17,7 @@ export const router = (router) => {
 
 // 获取saga，action，reducers
 export const model = (params) => {
-	creatReact.getReducers(params);
+	creatReact.getModel(params);
 };
 
 // 启动
@@ -28,6 +30,8 @@ export { react };
 export { redux };
 
 export { reactRedux };
+
+export { reactRouterDom };
 
 export default () => (
 	{

@@ -1,1 +1,1 @@
-export { default, router, model, run, react, redux, reactRedux } from './entry';
+export { default, router, model, run, react, redux, reactRedux, reactRouterDom } from './entry';

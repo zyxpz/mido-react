@@ -2,7 +2,7 @@
 
 ## 内置
 ```vim
-import { react, redux, reactRedux } from 'mido-react';
+import { react, redux, reactRedux, reactRouterDom } from 'mido-react';
 ```
 
 ## app.js
@@ -119,7 +119,9 @@ class Home extends React.Component {
 export default Home;
 ```
 
-## Routers.js
+## Router
+- Routers.js
+- 导入router文件
 ```vim
 export default [
   {
@@ -133,3 +135,25 @@ export default [
   }
 ]
 ```
+- 自行添加router
+
+```vim
+import Mido, { reactRouterDom } from 'mido-react';
+
+import App from './App';
+
+const {
+  BrowserRouter,
+  Route
+} = reactRouterDom;
+
+***省略部分***
+
+mido.router(() => 
+    <BrowserRouter>
+      <Route path="/" component={App} />
+    </BrowserRouter>
+)
+```
+
+[react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start)
