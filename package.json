@@ -1,6 +1,6 @@
 {
   "name": "mido-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "react,redux,router快速使用方法",
   "main": "index.js",
   "scripts": {
@@ -22,10 +22,15 @@
     "eslint-watch": "^5.0.1"
   },
   "dependencies": {
+    "history": "^4.9.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.0.2",
     "react-router": "^5.0.0",
-    "react-router-dom": "^5.0.0"
+    "react-router-dom": "^5.0.0",
+    "react-router-redux": "^4.0.8",
+    "redux": "^4.0.1",
+    "redux-saga": "^1.0.2"
   },
   "files": [
     "lib",
