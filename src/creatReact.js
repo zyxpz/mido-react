@@ -3,18 +3,22 @@ import { render } from 'react-dom';
 // import { Router, Route, browserHistory, hashHistory } from 'react-router';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+
 import { Provider } from 'react-redux';
 import { createBrowserHistory } from 'history';
 
-import { isFunction, isArray } from './utils';
-import creatReducers from './creatReducers';
-import creatStore from './creatStore';
+import { isFunction, isArray, prefixNamespace } from './utils';
+import creatStore, { creatReducerFunc } from './creatStore';
 import creatSub from './creatSubscriptions';
+import creatSaga from './creatSaga.js';
 
 class creactReact {
 	constructor() {
 		this.router = '';
 		this.subs = ''; // subscriptions
+		this.buildReducers = {};
+		this.sagas = [];
 	}
 
 	// 获取路由
@@ -22,63 +26,37 @@ class creactReact {
 		this.router = router;
 	}
 
+	// 获取effects
+	getEffects(model) {
+		this.sagas.push(creatSaga(model));
+	}
+
 	// 获取model，处理model
 	// @creatReducers
 	getModel(params) {
 		let d = '';
-		if (isArray(params)) {
-			const reducersArr = [];
-			const subArr = [];
-			let buildReducers = '';
-			params.forEach(item => {
-				const {
-					namespace,
-					state,
-					reducers,
-					subscriptions,
-				} = item;
-				buildReducers = creatReducers(namespace, state, reducers);
+		const newParams = [prefixNamespace(params)];
 
-				// 获取所以reducer
-				reducersArr.push(buildReducers);
-
-				const subObj = {
-					namespace,
-					reducers,
-					subscriptions,
-				};
-
-				// 获取subscriptions
-				subArr.push(subObj);
-			});
-			// 创建store
-			d = creatStore(reducersArr);
+		for (const m of newParams) {
+			this.buildReducers[m.namespace] = creatReducerFunc(m.reducers, m.state);
 
 			// 存储subscriptions
-			this.subs = subArr;
+			this.subs = m;
 
-		} else {
-			const {
-				namespace,
-				state,
-				reducers,
-				subscriptions,
-			} = params;
-			const buildReducers = creatReducers(namespace, state, reducers);
+			// effects
+			this.getEffects(m);
 
-			// 创建store
-			d = creatStore(buildReducers);
-
-			const subObj = {
-				namespace,
-				reducers,
-				subscriptions
-			};
-			// 存储subscriptions
-			this.subs = subObj;
 		}
 
-		this.store = createStore(d);
+		// 创建store
+		d = creatStore(this.buildReducers);		
+
+		const sagaMiddleware = createSagaMiddleware();
+
+		this.sagaMiddleware = sagaMiddleware;
+
+		this.store = createStore(d, applyMiddleware(sagaMiddleware));
+
 	}
 
 	// 创建渲染
@@ -86,7 +64,9 @@ class creactReact {
 
 		// 事件订阅
 		creatSub(this.subs, this.store);
-		
+
+		this.sagas.forEach(this.sagaMiddleware.run);
+
 		if (isFunction(this.router)) {
 			render(
 				<Provider store={this.store}>
@@ -98,15 +78,12 @@ class creactReact {
 					<Router>
 						{
 							this.router.map((item, i) =>
-								<div key={i}>
-									<Route
-										key={i}
-										exact={item.exact}
-										path={item.path}
-										component={item.component}
-									/>
-								</div>
-
+								<Route
+									key={i}
+									exact={item.exact}
+									path={item.path}
+									component={item.component}
+								/>
 							)
 						}
 

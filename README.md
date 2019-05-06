@@ -1,5 +1,22 @@
 # mido-react
 
+## 优化
+- webpack
+
+```vim
+externals: {
+      'react': 'React',
+      'react-dom': 'ReactDOM',
+      'react-router-dom': 'ReactRouterDOM',
+      'redux': 'Redux',
+      'react-redux': 'ReactRedux',
+      'react-router-redux': 'ReactRouterRedux',
+      'redux-saga': 'ReduxSaga'
+    }
+```
+
+- 自行搜索cdn资源
+
 ## 内置
 ```vim
 import { react, redux, reactRedux, reactRouterDom } from 'mido-react';
@@ -30,6 +47,24 @@ const mido = Mido();
          number: state.number - 1
        }
      }
+   },
+   effects: {
+     asyncAdd: [
+      function *({ data: {number} }, { call, put }) {
+        yield put({
+          type: 'add'
+        })
+      },
+      {
+        type: 'throttle',
+        ms: 3000
+      }
+    ],
+    *asyncReduce({  }, { call, put }) {
+      yield put({
+        type: 'reduce'
+      })
+    }
    }
  })
 
@@ -82,6 +117,27 @@ mido.model([
         }
       }
     },
+     effects: {
+      *asyncAdd2({ }, { call, put }) {
+        yield put({
+          type: 'add2'
+        })
+      },
+      *asyncReduce2({  }, { call, put }) {
+        yield put({
+          type: 'reduce2'
+        })
+      }
+    },
+    subscriptions: {
+      setup({ dispatch, history }) {
+        return history.listen(({ pathname }) => {
+          if (pathname === '/home2') {
+            dispatch({ type: 'init' });
+          }
+        });
+      }
+    }
   }
 ])
 
@@ -122,6 +178,7 @@ export default Home;
 ## Router
 - Routers.js
 - 导入router文件
+
 ```vim
 export default [
   {
@@ -157,3 +214,5 @@ mido.router(() =>
 ```
 
 [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start)
+
+## [example](https://github.com/zyxpz/mido-react-example)

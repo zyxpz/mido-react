@@ -6,6 +6,8 @@ import react from 'react';
 
 import * as reactRouterDom from 'react-router-dom';
 
+import { isArray } from './utils';
+
 import CreactReact from './creatReact';
 
 const creatReact = new CreactReact();
@@ -17,7 +19,13 @@ export const router = (router) => {
 
 // 获取saga，action，reducers
 export const model = (params) => {
-	creatReact.getModel(params);
+	if (isArray(params)) {
+		params.forEach(item => {
+			creatReact.getModel(item);
+		});
+	} else {
+		creatReact.getModel(params);
+	}
 };
 
 // 启动

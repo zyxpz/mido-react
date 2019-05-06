@@ -1,3 +1,6 @@
+## 1.0.2
+- add redux-saga
+
 ## 1.0.0-beta6
 - router 带入history
 - redux subscriptions 添加

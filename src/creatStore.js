@@ -1,24 +1,22 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
-import { isArray } from './utils';
+import handleActions from './creatReducers';
+
+export const creatReducerFunc = (reducers, state) => {
+	if (Array.isArray(reducers)) {
+		return reducers[1](
+			handleActions(state, reducers[0])
+		);
+	} else {
+		return handleActions(state, reducers || {});
+	}
+};
+
 
 export default (reducers) => {
-	if (isArray(reducers)) {
-		let newObj = {};
-		reducers.map(item => {
-			Object.assign(newObj, item);
-		});
-
-		return combineReducers({
-			routing: routerReducer,
-			...newObj
-		});
-
-	} else {
-		return combineReducers({
-			routing: routerReducer,
-			...reducers
-		});
-	}
+	return combineReducers({
+		routing: routerReducer,
+		...reducers
+	});
 
 };
